@@ -13,8 +13,74 @@ app.use(express.json());
 app.get('/hello', (req, res) => {
   res.type('text').send('Hello from the server!');
 });
- 
- 
+
+app.get('/api/time', (req, res)=>{
+  let date = new Date().toISOString();
+  res.type('json').send({
+    currentTime: date,
+    message: "Current server time"
+  });
+});
+
+app.get('/api/greet/:name', (req, res)=>{
+  let urlName = req.params.name;
+  let greet = "Hello, " + urlName + "!";
+  res.type('json').send({
+    greeting: greet
+  });
+});
+
+app.get('/api/math', (req, res)=>{
+  let a = Number(req.query.a);
+  let b = Number(req.query.b);
+  let opp = req.query.operation;
+  let result = 0;
+  switch(opp){
+    case "add":
+      result = a + b;
+      break;
+    case "subtract":
+      result = a - b;
+      break;
+    case "multiply":
+      result = a * b;
+      break;
+    case "divide":
+      result = a / b;
+      break;
+    default:
+      result = "error";
+  }
+  res.type('json').send({
+    a: a,
+    b: b,
+    operation: opp,
+    result: result
+  });
+});
+
+app.get('/api/slow', (req, res) => {
+  setTimeout(() => {
+    res.json({
+      message: "Sorry for the wait!",
+      delayMs: 3000
+    });
+  }, 3000);
+});
+
+app.get('/api/unreliable', (req, res) => {
+  const rand = Math.random();
+  if (rand < 0.5) {
+    res.status(500).json({
+      error: "Server had a bad day. Try again!"
+    });
+  } else {
+    res.json({
+      message: "Lucky! It worked this time.",
+      luckyNumber: Math.floor(Math.random() * 100)
+    });
+  }
+});
  
 // ---- Your endpoints go above this line ----
  
