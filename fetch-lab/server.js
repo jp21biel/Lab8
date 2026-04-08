@@ -86,20 +86,24 @@ let messages = [
   { id: 1, text: "Welcome to the message board!", author: "Admin" },
 ];
 let nextId = 2;
-app.get('/api/messages', (res, req) => {
-  res.json(messages[0]);
+app.get('/api/messages', (req, res) => {
+  res.status(201).json(messages);
 });
-app.post('/api/messages', (res, req) => {
-  let {txt, auth} = req.body;
-  if(!txt || !auth){
-    res.status(400).json({error: "text and author are required"});
-  }else{
-    messages.push(
-      {id: nextId, text: txt, author: auth}
-    )
-  }
-  res.status(201).json(messages[nextID - 1]);
-  nextId++;
+app.post('/api/messages', (req, res) => {
+console.log(req.body);
+messages.push({
+  id: nextId,
+  text: req.body.text,
+  author: req.body.author
+});
+nextId++;
+res.status(201).json(messages);
+});
+
+//Lab 9
+
+app.get('/api/headers', (req, res) => {
+  res.json(req.headers);
 });
  
 // ---- Your endpoints go above this line ----
