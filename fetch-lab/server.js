@@ -81,6 +81,26 @@ app.get('/api/unreliable', (req, res) => {
     });
   }
 });
+
+let messages = [
+  { id: 1, text: "Welcome to the message board!", author: "Admin" },
+];
+let nextId = 2;
+app.get('/api/messages', (res, req) => {
+  res.json(messages[0]);
+});
+app.post('/api/messages', (res, req) => {
+  let {txt, auth} = req.body;
+  if(!txt || !auth){
+    res.status(400).json({error: "text and author are required"});
+  }else{
+    messages.push(
+      {id: nextId, text: txt, author: auth}
+    )
+  }
+  res.status(201).json(messages[nextID - 1]);
+  nextId++;
+});
  
 // ---- Your endpoints go above this line ----
  
