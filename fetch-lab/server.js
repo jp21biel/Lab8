@@ -90,14 +90,22 @@ app.get('/api/messages', (req, res) => {
   res.status(201).json(messages);
 });
 app.post('/api/messages', (req, res) => {
-console.log(req.body);
-messages.push({
-  id: nextId,
-  text: req.body.text,
-  author: req.body.author
-});
-nextId++;
-res.status(201).json(messages);
+  console.log(req.body);
+  txt = req.body.text;
+  auth = req.body.auth;
+  if(!txt || !auth){
+    res.json({
+      error: "Missing fields"
+    });
+  }else{
+    messages.push({
+    id: nextId,
+    text: req.body.text,
+    author: req.body.author
+    });
+    nextId++;
+    res.status(201).json(messages);
+  }
 });
 
 //Lab 9
