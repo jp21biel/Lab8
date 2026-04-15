@@ -1,8 +1,9 @@
 "use strict";
  
 const express = require('express');
+const cors = require('cors');
 const app = express();
- 
+app.use(cors());
 // Serve static files from the 'public' folder
 app.use(express.static('public'));
  
@@ -91,21 +92,13 @@ app.get('/api/messages', (req, res) => {
 });
 app.post('/api/messages', (req, res) => {
   console.log(req.body);
-  txt = req.body.text;
-  auth = req.body.auth;
-  if(!txt || !auth){
-    res.json({
-      error: "Missing fields"
-    });
-  }else{
-    messages.push({
+  messages.push({
     id: nextId,
     text: req.body.text,
     author: req.body.author
-    });
-    nextId++;
-    res.status(201).json(messages);
-  }
+  });
+  nextId++;
+  res.status(201).json(messages);
 });
 
 //Lab 9
